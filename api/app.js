@@ -5,10 +5,14 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 
+//library
+var flash = require("express-flash");
+var session = require("express-session");
+
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-var testAPIRouter = require("./routes/testAPI");
-var testRouter = require("./routes/newTestAPI");
+var testRouter = require("./routes/testAPI");
+var postsRouter = require("./routes/posts");
 
 var app = express();
 
@@ -19,14 +23,15 @@ app.set("view engine", "jade");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(cors());
+app.use(flash());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/testApi", testAPIRouter);
 app.use("/test", testRouter);
+app.use("/posts", postsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
